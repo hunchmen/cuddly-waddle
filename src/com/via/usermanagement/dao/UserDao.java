@@ -3,10 +3,12 @@ package com.via.usermanagement.dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.via.usermanagement.bean.User;
-import com.via.usermanagement.utils.SqlUtils;
 
 public class UserDao {
 
@@ -60,23 +62,61 @@ public class UserDao {
 	}
 
 	//select user by id
-	public void selectUser(int id) {
+	public User selectUser(int id) {
 		User user = null;
-		//Establishing connection
+		//Step 1: Establishing connection
 		try (Connection connection = getConnection();
-				//Create a statement using connection object
+				//Step 2: Create a statement using connection object
 				PreparedStatement preparedStatement = getConnection().prepareStatement(SELECT_USER_BY_ID)){
-			preparedStatement.setString(1, user.getName());
-			preparedStatement.setString(2, user.getEmail());
-			preparedStatement.setString(3, user.getCountry());
-			//execute the query o udpate query
+			preparedStatement.setInt(1, id);
+			//Step 3: execute the query o update query
 			System.out.println(preparedStatement);
-			preparedStatement.executeUpdate();
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			//Step 4: Process the Resultset object.
+			while(rs.next()) {
+				String name = rs.getString("name");
+				String email = rs.getString("email");
+				String country = rs.getString("country");
+				user = new User(id, name, email, country);
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			printSQLException(e); 
+		}
+		
+		return user;
+	}
+	
+	//select all users
+	public List<User> selectAllUsers(){
+		//using try-with-resources to avoid closing resources(boiler plate code)
+		List<User> users = new ArrayList<>();
+		
+		//Step 1: establish connection
+		try (Connection connection = getConnection();
+				//Step 2:
+				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS)){
+				System.out.println(preparedStatement);
+				//Step 3: Execute query or update query
+				ResultSet rs = preparedStatement.executeQuery();
+				
+				//Step 4: Process the result set object
+				while(rs.next()) {
+					int id = rs.getInt(1, id);
+					String name = rs.getString(name);
+					String email = rs.getString(email);
+					String country = rs.getString(country);
+					users.add(new User(id, name, email, country));
+				}
 		} catch (SQLException e) {
 			// TODO: handle exception
 			printSQLException(e);
 		}
+		
+		return users;
 	}
+	
 	
 	
 	private void printSQLException(SQLException ex) {
