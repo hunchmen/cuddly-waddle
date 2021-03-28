@@ -90,7 +90,8 @@ public class UserDao {
 	}
 	
 	//select all users
-	public List<User> selectAllUsers(){
+	public List<User> selectAllUsers()
+	{
 		//using try-with-resources to avoid closing resources(boiler plate code)
 		List<User> users = new ArrayList<>();
 		
@@ -119,7 +120,8 @@ public class UserDao {
 	}
 	
 	//update user
-	public boolean updateUser(User user) throws SQLException {
+	public boolean updateUser(User user) throws SQLException 
+	{
 		boolean rowUpdated;
 		try (Connection connection = getConnection();
 				PreparedStatement statement = connection.prepareStatement(UPDATE_USERS)) {
@@ -132,6 +134,19 @@ public class UserDao {
 			rowUpdated = statement.executeUpdate() > 0;
 		} 
 		return rowUpdated;
+	}
+	
+	//delete user
+	public boolean deleteUser(int id) throws SQLException
+	{
+		boolean rowDeleted;
+		try(Connection connection = getConnection();
+				PreparedStatement statement = connection.prepareStatement(DELETE_USERS))
+		{
+			statement.setInt(1, id);
+			rowDeleted = statement.executeUpdate() > 0;
+		}
+		return rowDeleted;
 	}
 	
 	private void printSQLException(SQLException ex) {
