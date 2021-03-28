@@ -18,21 +18,21 @@ public class UserDao {
 	private String jdbcPassword = "admin123";
 	private String jdbcDriver = "com.mysql.jdbc.Driver";
 	
-	public UserDao() {
-	}
-	
 	private static final String SELECT_USER_BY_ID =  "SELECT id, name, email, country FROM users WHERE ID =?";
 	private static final String SELECT_ALL_USERS = "SELECT * FROM users";
 	private static final String INSERT_USERS = "INSERT INTO users (name. email, country) VALUES (?, ?, ?)";
 	private static final String DELETE_USERS = "DELETE FROM users WHERE id=?";
 	private static final String UPDATE_USERS = "UPDATE users SET name = ?, email = ?, country = ? WHERE id = ?";
 	
+	public UserDao() {
+	}
+	
 	protected Connection getConnection() {
 		
 		Connection connection = null;
 		
 		try {
-			Class.forName("jdbcDriver");
+			Class.forName(jdbcDriver);
 			connection =  DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
 		} catch (SQLException e) {
 			// TODO: handle exception
