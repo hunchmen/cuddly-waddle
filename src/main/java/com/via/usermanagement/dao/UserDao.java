@@ -103,10 +103,10 @@ public class UserDao {
 				
 				//Step 4: Process the result set object
 				while(rs.next()) {
-					int id = rs.getInt(1, id);
-					String name = rs.getString(name);
-					String email = rs.getString(email);
-					String country = rs.getString(country);
+					int id = rs.getInt("id");
+					String name = rs.getString("name");
+					String email = rs.getString("email");
+					String country = rs.getString("country");
 					users.add(new User(id, name, email, country));
 				}
 		} catch (SQLException e) {
