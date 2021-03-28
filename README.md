@@ -1,2 +1,8 @@
 # cuddly-waddle
-user management project
+User management project
+
+#Technology used:
+Java,
+Servlet,
+Maven,
+Tomcat 9.0
